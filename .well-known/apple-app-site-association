@@ -1,0 +1,10 @@
+{
+  "applinks": {
+  "apps": [],
+  "details": [
+    { 
+      "appID": "W863J6W8DZ.com.svend.nfckit",
+      "paths":["*"]
+    }
+  ]
+}
