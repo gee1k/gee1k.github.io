@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>  - Home page of Svend</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/index.css" />
+  <link rel="icon" href="/favicon.ico"
+    type="image/x-icon">
+  <link href='//fonts.googleapis.com/css?family=Open+Sans|Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="header">
+        <h1>Svend</h1>
+        <h2> 💭 Web Developer</h2>
+        <div class="quote">
+          <p class="quote-text animate-init" id="hitokoto">:D 获取中...</p>
+          <p class="quote-author animate-init"><strong id="hitokoto-from"></strong></p>
+        </div>
+      </div>
+      <div class="menu">
+        <a href="//github.com/gee1k" target="_blank" class="animate-init">GitHub</a>
+      </div>
+      <div class="location">
+        <i class="location-icon"></i>
+        <span class="location-text animate-init">Suzhou,China</span>
+      </div>
+    </div>
+  </div>
+  <script src="//unpkg.com/jquery@3.3.1/dist/jquery.min.js" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      var delay = 1;
+      var DELAY_STEP = 100;
+      var animationOptions = {
+        opacity: 1,
+        top: 0
+      };
+
+      $('h1').animate(animationOptions).promise()
+        .pipe(animationBio)
+        .pipe(animateMain)
+        .pipe(animateLocationIcon);
+
+      function animationBio() {
+        $('h2').animate(animationOptions);
+      }
+
+      function animateMain() {
+        var dfd = $.Deferred();
+        var els = $('.animate-init');
+        var len = els.length;
+
+        els.each(function (index, el) {
+          delay++;
+          $(el).delay(index * DELAY_STEP)
+            .animate(animationOptions);
+          (len - 1 === index) && dfd.resolve();
+        });
+        return dfd.promise();
+      }
+
+      function animateLocationIcon() {
+        $('.location-icon').delay(delay * DELAY_STEP).animate({
+          opacity: 1,
+          top: 0
+        }).promise().done();
+      }
+
+      hitokoto();
+    });
+
+    function hitokoto() {
+      $.ajax({
+        url: '//v1.hitokoto.cn/',
+        type: 'get',
+        success: function(res){
+          $('#hitokoto').text(res.hitokoto);
+          $('#hitokoto-from').text(res.from);
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
